@@ -10,7 +10,7 @@ def read_input():
     #file_path = (os.path.dirname(__file__)) + "/" + 'test.txt'
     file_path = (os.path.dirname(__file__)) + "/" + 'input.txt'
     with open(file_path, 'r', encoding='utf8') as file:
-        return file.readlines()[0]
+        return file.read()
 
 def unique_values(values: list) -> bool:
     """checks if list values are unique"""
@@ -22,7 +22,7 @@ def unique_values(values: list) -> bool:
     return True
 
 def find_start_marker(signal: str, distinct_characters: int) -> int:
-    """returns position of a character that stars an unique set of characters in a signal"""
+    """returns index of a character that ends a substring of unique characters with a lenght of distinct_characters"""
     most_recent = deque()
     for index, char in enumerate(signal):
         most_recent.append(char)
@@ -30,6 +30,7 @@ def find_start_marker(signal: str, distinct_characters: int) -> int:
             most_recent.popleft()
         if len(most_recent) == distinct_characters and unique_values(most_recent):
             return index + 1
+    return -1   # no suitable substring found
 
 def solve() -> None:
     data = read_input()
