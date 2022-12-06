@@ -21,14 +21,14 @@ def unique_values(values: list) -> bool:
         return False
     return True
 
-def find_start_marker(signal: str, distinct_characters: int) -> int:
-    """returns index of a character that ends a substring of unique characters with a lenght of distinct_characters"""
+def find_start_marker(signal: str, required_length: int) -> int:
+    """returns index of a character that ends a substring of unique characters with a lenght of a required_length"""
     most_recent = deque()
     for index, char in enumerate(signal):
         most_recent.append(char)
-        if len(most_recent) > distinct_characters:
+        if len(most_recent) > required_length:
             most_recent.popleft()
-        if len(most_recent) == distinct_characters and unique_values(most_recent):
+        if len(most_recent) == required_length and unique_values(most_recent):
             return index + 1
     return -1   # no suitable substring found
 
