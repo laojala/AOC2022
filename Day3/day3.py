@@ -6,23 +6,19 @@ Solutions for https://adventofcode.com/2022/day/3
 import os
 import string
 
-
 alphabet = list(string.ascii_lowercase) + list(string.ascii_uppercase)
-
 
 def read_input():
     #file_path = (os.path.dirname(__file__)) + "/" + 'test.txt'
     file_path = (os.path.dirname(__file__)) + "/" + 'input.txt'
-    with open(file_path, 'r') as f:
-        all_lines = [d.rstrip() for d in f.readlines()]
+    with open(file_path, 'r', encoding='utf8') as file:
+        all_lines = [d.rstrip() for d in file.readlines()]
     return all_lines
 
-
-
-def put_to_half(string):
-    half = round(len(string)/2)
-    first_half = string[:half]
-    second_half = string[half:]
+def put_to_half(sacks):
+    half = round(len(sacks)/2)
+    first_half = sacks[:half]
+    second_half = sacks[half:]
     return [first_half, second_half]
 
 def find_common_item(lists):
@@ -30,8 +26,8 @@ def find_common_item(lists):
         if letter in lists[1]:
             return letter
 
-def get_priority(string):
-    return alphabet.index(string) + 1
+def get_priority(sacks):
+    return alphabet.index(sacks) + 1
 
 def count_part1(all_rucksacks):
     priority = 0
@@ -39,7 +35,7 @@ def count_part1(all_rucksacks):
         [first, second] = put_to_half(rucksack)
         common_item = find_common_item([first, second])
         letter_priority = get_priority(common_item)
-        priority += letter_priority        
+        priority += letter_priority
     return priority
 
 def divide_to_chunks(lists):
@@ -63,18 +59,19 @@ def count_part2(all_rucksacks):
     priority = 0
     for bags in chuncks:
         common_item =  find_common_item_from_bags(bags)
-        priority += get_priority(common_item)   
+        priority += get_priority(common_item)
     return priority
 
-
-
-if __name__ == '__main__':
+def solve() -> None:
     data = read_input()
 
     part1_result = count_part1(data)
     print(part1_result)
-    assert(part1_result == 8185)
+    assert part1_result == 8185
 
     part2_result = count_part2(data)
     print(part2_result)
-    assert(part2_result == 2817)
+    assert part2_result == 2817
+
+if __name__ == '__main__':
+   solve()

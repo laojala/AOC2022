@@ -9,7 +9,7 @@ from collections import deque
 def read_input():
     #file_path = (os.path.dirname(__file__)) + "/" + 'test.txt'
     file_path = (os.path.dirname(__file__)) + "/" + 'input.txt'
-    with open(file_path, 'r', encoding="utf8") as file:
+    with open(file_path, 'r', encoding='utf8') as file:
         return file.readlines()[0]
 
 def unique_values(values: list) -> bool:
@@ -31,14 +31,16 @@ def find_start_marker(signal: str, distinct_characters: int) -> int:
         if len(most_recent) == distinct_characters and unique_values(most_recent):
             return index + 1
 
-if __name__ == '__main__':
+def solve() -> None:
     data = read_input()
 
     part1_result = find_start_marker(data, 4)
     print(part1_result)
-    assert(part1_result == 1582 or 11)
+    assert part1_result == 1582 or 11
 
     part2_result = find_start_marker(data, 14)
     print(part2_result)
-    assert(part2_result == 3588 or 26)
-   
+    assert part2_result == 3588 or 26
+
+if __name__ == '__main__':
+    solve()

@@ -8,8 +8,8 @@ import os
 def read_input():
     #file_path = (os.path.dirname(__file__)) + "/" + 'test.txt'
     file_path = (os.path.dirname(__file__)) + "/" + 'input.txt'
-    with open(file_path, 'r') as f:
-        all_lines = [d.rstrip() for d in f.readlines()]
+    with open(file_path, 'r', encoding='utf8') as file:
+        all_lines = [d.rstrip() for d in file.readlines()]
     return all_lines
 
 def count_part1(elf_data):
@@ -37,14 +37,17 @@ def count_part2(elf_data):
             next_counter = 0
     return sum(top_elves)
 
-if __name__ == '__main__':
+def solve():
     data = read_input()
 
     part1_result = count_part1(data)
     print(part1_result)
-    assert(part1_result == 67622)
+    assert part1_result == 67622
 
     part2_result = count_part2(data)
     print(part2_result)
-    assert(part2_result == 201491)
+    assert part2_result == 201491
+
+if __name__ == '__main__':
+    solve()
    
