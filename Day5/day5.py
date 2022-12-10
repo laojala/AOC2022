@@ -67,12 +67,12 @@ def solve() -> None:
 
     part1_result = count_part1(stacks, instructions)
     print(part1_result)
-    assert part1_result == 'CNSZFDVLJ' or 'CMZ'
+    assert part1_result == 'CNSZFDVLJ' or part1_result == 'CMZ'
 
     stacks2 = read_input()
     part2_result = count_part2(stacks2, instructions)
     print(part2_result)
-    assert part2_result == 'QNDWLMGNS' or 'MCD'
+    assert part2_result == 'QNDWLMGNS' or part2_result == 'MCD'
 
 if __name__ == '__main__':
     solve()

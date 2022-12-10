@@ -41,11 +41,11 @@ def solve() -> None:
 
     part1_result = count_part1(data)
     print(part1_result)
-    assert part1_result == 471 or 2
+    assert part1_result == 471 or part1_result == 2
 
     part2_result = count_part2(data)
     print(part2_result)
-    assert part2_result == 888 or 4
+    assert part2_result == 888 or part2_result == 4
 
 if __name__ == '__main__':
     solve()

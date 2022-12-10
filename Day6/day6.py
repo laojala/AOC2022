@@ -37,11 +37,11 @@ def solve() -> None:
 
     part1_result = find_start_marker(data, 4)
     print(part1_result)
-    assert part1_result == 1582 or 11
+    assert part1_result == 1582 or part1_result == 11
 
     part2_result = find_start_marker(data, 14)
     print(part2_result)
-    assert part2_result == 3588 or 26
+    assert part2_result == 3588 or part2_result == 26
 
 if __name__ == '__main__':
     solve()
