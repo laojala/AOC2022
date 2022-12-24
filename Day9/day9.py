@@ -1,32 +1,51 @@
 import os
 
+
 HEAD_MASK = {'R':(1,0), 'L':(-1,0), 'D':(0,-1), 'U':(0,1)}
-TAIL_MASK = {'R':(-1,0), 'L':(1,0), 'D':(0,1), 'U':(0,-1)}
+DIFF_MASK = {2:-1, -2:1}
 
 class Rope:
-    def __init__(self):
+    def __init__(self, length=1):
+        self.length = length
         self.head = (0,0)
-        self.tail = (0,0)
+        self.knots = self.create_knots(self.length)
         self.tail_visited = {(0,0)}  # set
 
-    def move(self, instruction):
-        for i in range(int(instruction[1])):
-            #print(f'begin round {i} - H:{self.head}, T:{self.tail}')
-            self.head = tuple(map(sum,zip(self.head, HEAD_MASK[instruction[0]])))
-            #count difference
-            difference = (abs(self.head[0]-self.tail[0]), abs(self.head[1]-self.tail[1]))
-            #print(f'diff: {difference}')
-            if not (difference[0] <= 1 and difference[1] <= 1):
-                self.tail = tuple(map(sum,zip(self.head, TAIL_MASK[instruction[0]])))
-            self.tail_visited.add(self.tail)
-            #print(f'end round {i} - H:{self.head}, T:{self.tail}')
+    def create_knots(self, length):
+        return dict.fromkeys(range(length), (0,0))
 
-    @staticmethod
-    def is_adjanced(x, y):
-        return abs(x[0] - y[0]) <= 1 and abs(x[1] - y[1]) <= 1
+    def move(self, instruction):
+        # pylint: disable=consider-using-dict-items
+        for index in range(int(instruction[1])):
+            # new position for head:
+            self.head = tuple(map(sum,zip(self.head, HEAD_MASK[instruction[0]])))
+
+            # loop tail and set new positions:
+            for key in self.knots:
+                if key == 0:
+                    previous = self.head
+                else:
+                    previous = self.knots[key-1]
+
+                # loop knots and check if there is difference in between the previous
+                diff = (previous[0]-self.knots[key][0], previous[1]-self.knots[key][1])
+
+                mask0, mask1 = 0, 0
+                if abs(diff[0]) > 1:
+                    mask0 = DIFF_MASK[diff[0]]
+                if abs(diff[1]) > 1:
+                    mask1 = DIFF_MASK[diff[1]]
+
+                if not (abs(diff[0]) <= 1 and abs(diff[1]) <= 1):
+                    self.knots[key] = tuple(map(sum,zip(previous, (mask0, mask1))))
+                else:
+                    # rest of the nots do not move if previous knot does not move
+                    break
+            self.tail_visited.add(self.knots[self.length-1])
 
 def read_input():
     #file_path = (os.path.dirname(__file__)) + "/" + 'test.txt'
+    #file_path = (os.path.dirname(__file__)) + "/" + 'larger_test.txt'
     file_path = (os.path.dirname(__file__)) + "/" + 'input.txt'
     with open(file_path, 'r', encoding='utf8') as file:
         all_lines = [d.rstrip() for d in file.readlines()]
@@ -37,11 +56,17 @@ def solve() -> None:
     motions = read_input()
     rope = Rope()
     for motion in motions:
-        #print(f'instruction: {motion}')
         rope.move(motion)
     part1 = len(rope.tail_visited)
-    print(part1)
+    print(f'part1: {part1}')
     assert part1 in (13, 5710)
+
+    rope_part2 = Rope(9)
+    for motion in motions:
+        rope_part2.move(motion)
+    part2 = len(rope_part2.tail_visited)
+    print(f'part2: {part2}')
+    assert part2 in (1, 2259)
 
 if __name__ == '__main__':
     solve()
